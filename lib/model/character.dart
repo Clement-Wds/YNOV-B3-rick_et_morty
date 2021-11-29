@@ -5,14 +5,17 @@ class Character{
   late Map<String, dynamic> info;
   List<Result>results = [];
 
-  Character.json(Map<String, dynamic> map){
+  Future <Result> jsonResult(Map<String, dynamic> map) async {
     Result ?results;
-    results!.id = map["id"];
-    results.name = map["name"];
-    results.status = map["status"];
-    results.species = map["species"];
-    results.type = map["type"];
-    results.gender = map["gender"];
+    results!.id = map['id'];
+    results.name = map['name'];
+    results.status = map['status'];
+    results.species = map['species'];
+    results.type = map['type'];
+    results.gender = map['gender'];
+    results.origin = map['origin'];
+
+    return results;
 
   }
 

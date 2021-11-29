@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 import 'package:rick_et_morty/model/character.dart';
 
 import 'model/character.dart';
+import 'model/result.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +38,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Character> listCharacter=[];
+  List<Result> listCharacter = [];
   late var jsonResponse;
   String apiAdresse = "https://rickandmortyapi.com/api/character";
   int _counter = 0;
@@ -48,8 +49,27 @@ class _MyHomePageState extends State<MyHomePage> {
 
     Response responseAdresse = await http.get(url);
     jsonResponse = convert.jsonDecode(responseAdresse.body) as Map<String, dynamic>;
+    int index = 0;
 
-    print(jsonResponse["info"]);
+    while(index < jsonResponse["results"].length){
+      Character().jsonResult(jsonResponse["results"][index]).then((value){
+        setState(() {
+          Result result = value;
+
+          print(result.name);
+
+          listCharacter.add(result);
+          listCharacter[index].name;
+          index++;
+        });
+      });
+    }
+
+    if(jsonResponse['info']['next'] != null){
+      init(jsonResponse['info']['next']);
+    }
+
+    print("JSON >> >> >> : " + jsonResponse['info']['next']);
   }
 
 
@@ -69,6 +89,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(listCharacter[0].name);
+    print(listCharacter[0].gender);
 
     return Scaffold(
       appBar: AppBar(
