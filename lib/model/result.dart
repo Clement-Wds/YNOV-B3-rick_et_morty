@@ -11,4 +11,16 @@ class Result{
   late String image;
   late String url;
   late String created;
+
+  Result.json(Map<String, dynamic> map){
+    id = map['id'];
+    name = map['name'];
+    status = map['status'];
+    species = map['species'];
+    type = map['type'];
+    gender = map['gender'];
+    origin = map['origin'];
+    image = map['image'];
+
+  }
 }

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:rick_et_morty/model/character.dart';
+import 'package:rick_et_morty/model/details_perso.dart';
 
-import 'model/character.dart';
 import 'model/result.dart';
 
 void main() {
@@ -52,24 +51,18 @@ class _MyHomePageState extends State<MyHomePage> {
     int index = 0;
 
     while(index < jsonResponse["results"].length){
-      Character().jsonResult(jsonResponse["results"][index]).then((value){
-        setState(() {
-          Result result = value;
-
-          print(result.name);
-
-          listCharacter.add(result);
-          listCharacter[index].name;
-          index++;
-        });
+      setState(() {
+        Result result = Result.json(jsonResponse["results"][index]);
+        listCharacter.add(result);
       });
+      index++;
     }
 
     if(jsonResponse['info']['next'] != null){
       init(jsonResponse['info']['next']);
     }
-
     print("JSON >> >> >> : " + jsonResponse['info']['next']);
+
   }
 
 
@@ -77,8 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override void initState() {
     // TODO: implement initState
-    super.initState();
     init(apiAdresse);
+    super.initState();
   }
   void _incrementCounter() {
     setState(() {
@@ -89,8 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(listCharacter[0].name);
-    print(listCharacter[0].gender);
 
     return Scaffold(
       appBar: AppBar(
@@ -103,7 +94,36 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+
+      body: bodyPage(),// This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+  Widget bodyPage(){
+    return GridView.builder(
+        itemCount: listCharacter.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+    itemBuilder: (BuildContext context, int index){
+      return InkWell(
+          child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  image: DecorationImage(
+                      image: NetworkImage(listCharacter[index].image),
+                      fit: BoxFit.fill
+                  )
+              ),
+          ),
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(
+                builder: (BuildContext context){
+                  return detailsPerso(perso: listCharacter[index]);
+                }
+            ));
+          }
+      );
+    }
     );
   }
 }
+

@@ -14,6 +14,7 @@ class Character{
     results.type = map['type'];
     results.gender = map['gender'];
     results.origin = map['origin'];
+    results.image = map['image'];
 
     return results;
 
