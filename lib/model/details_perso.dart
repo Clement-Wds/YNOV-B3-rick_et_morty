@@ -46,6 +46,7 @@ class detailsPersoState extends State<detailsPerso>{
         //ternaire -> remplace le if
         (widget.perso.gender=='Male')?const Icon(Icons.male, size: 30,):const Icon(Icons.female, size: 30,),
         Text(widget.perso.type),
+        Text(widget.perso.url),
       ],
     );
   }

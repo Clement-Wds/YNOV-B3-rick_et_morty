@@ -21,6 +21,7 @@ class Result{
     gender = map['gender'];
     origin = map['origin'];
     image = map['image'];
+    url = map['url'];
 
   }
 }
